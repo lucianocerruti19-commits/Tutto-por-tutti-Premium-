@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <title>Tutto Platform</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <link rel="manifest" href="manifest.json">
+  <link rel="stylesheet" href="styles.css">
+</head>
+
+<body>
+
+<header>
+  <h1>🍕 Tutto Platform</h1>
+  <p>Menú QR + Pedidos en Cocina + Mozo Digital</p>
+</header>
+
+<div class="card">
+  <h2>🚀 Accesos</h2>
+
+  <button onclick="location.href='menu.html'">
+    📲 Menú Cliente (QR)
+  </button>
+
+  <button onclick="location.href='login.html'">
+    🔐 Staff Login
+  </button>
+</div>
+
+<script>
+if ("serviceWorker" in navigator) {
+  navigator.serviceWorker.register("service-worker.js");
+}
+</script>
+
+</body>
+</html>

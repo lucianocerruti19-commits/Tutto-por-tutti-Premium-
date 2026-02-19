@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <title>Admin Tutto</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="stylesheet" href="styles.css">
+</head>
+
+<body>
+
+<header>
+  <h1>⚙️ Admin Productos</h1>
+</header>
+
+<div class="card">
+  <input id="name" placeholder="Nombre">
+  <input id="price" placeholder="Precio">
+  <input id="desc" placeholder="Descripción">
+
+  <button onclick="addProduct()">Agregar Producto</button>
+</div>
+
+<script type="module">
+import { db } from "./firebase.js";
+import { collection, addDoc }
+from "https://www.gstatic.com/firebasejs/12.9.0/firebase-firestore.js";
+
+window.addProduct = async function() {
+  const name = document.getElementById("name").value;
+  const price = document.getElementById("price").value;
+  const desc = document.getElementById("desc").value;
+
+  await addDoc(collection(db, "products"), {
+    name,
+    price,
+    description: desc
+  });
+
+  alert("✅ Producto agregado");
+};
+</script>
+
+</body>
+</html>

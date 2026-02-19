@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <title>Tutto Menú</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <link rel="stylesheet" href="styles.css">
+</head>
+
+<body>
+
+<header>
+  <h1>📲 Menú Tutto</h1>
+  <p>Pedí desde tu mesa</p>
+</header>
+
+<div id="products"></div>
+
+<div class="card">
+  <h2>🛒 Pedido</h2>
+  <ul id="cart"></ul>
+  <button onclick="sendOrder()">Enviar Pedido</button>
+</div>
+
+<script type="module">
+import { db } from "./firebase.js";
+import {
+  collection,
+  getDocs,
+  addDoc,
+  serverTimestamp
+} from "https://www.gstatic.com/firebasejs/12.9.0/firebase-firestore.js";
+
+const productsDiv = document.getElementById("products");
+const cartUl = document.getElementById("cart");
+
+let cart = [];
+
+const urlParams = new URLSearchParams(window.location.search);
+const table = urlParams.get("mesa") || "Mesa ?";
+
+async function loadProducts() {
+  const snap = await getDocs(collection(db, "products"));
+
+  snap.forEach(docSnap => {
+    const p = docSnap.data();
+
+    const card = document.createElement("div");
+    card.className = "card";
+
+    card.innerHTML = `
+      <h2 style="color:gold;">${p.name}</h2>
+      <p>${p.description}</p>
+      <p><b>$${p.price}</b></p>
+      <button onclick="addToCart('${p.name}')">➕ Agregar</button>
+    `;
+
+    productsDiv.appendChild(card);
+  });
+}
+
+window.addToCart = function(name) {
+  cart.push(name);
+  renderCart();
+};
+
+function renderCart() {
+  cartUl.innerHTML = "";
+  cart.forEach(item => {
+    const li = document.createElement("li");
+    li.textContent = item;
+    cartUl.appendChild(li);
+  });
+}
+
+window.sendOrder = async function() {
+  if (cart.length === 0) return alert("Carrito vacío");
+
+  await addDoc(collection(db, "orders"), {
+    table,
+    items: cart,
+    status: "pendiente",
+    createdAt: serverTimestamp()
+  });
+
+  alert("✅ Pedido enviado!");
+  cart = [];
+  renderCart();
+};
+
+loadProducts();
+</script>
+
+</body>
+</html>

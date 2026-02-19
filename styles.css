@@ -1,0 +1,38 @@
+body {
+  margin: 0;
+  font-family: Arial;
+  background: #000;
+  color: white;
+}
+
+header {
+  text-align: center;
+  padding: 20px;
+}
+
+h1 {
+  color: gold;
+}
+
+.card {
+  background: #111;
+  border: 1px solid gold;
+  margin: 15px;
+  padding: 15px;
+  border-radius: 15px;
+}
+
+button {
+  width: 100%;
+  padding: 15px;
+  margin-top: 10px;
+  border: none;
+  border-radius: 12px;
+  font-size: 18px;
+  background: gold;
+  font-weight: bold;
+}
+
+button:hover {
+  background: #ffd700;
+}

@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <title>Cocina Tutto</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <link rel="stylesheet" href="styles.css">
+</head>
+
+<body>
+
+<header>
+  <h1>🔥 Cocina Tutto</h1>
+</header>
+
+<audio id="ding" src="ding.mp3"></audio>
+
+<div id="orders"></div>
+
+<script type="module">
+import { db } from "./firebase.js";
+import {
+  collection,
+  onSnapshot
+} from "https://www.gstatic.com/firebasejs/12.9.0/firebase-firestore.js";
+
+const ordersDiv = document.getElementById("orders");
+const ding = document.getElementById("ding");
+
+onSnapshot(collection(db, "orders"), snap => {
+  ordersDiv.innerHTML = "";
+
+  snap.forEach(docSnap => {
+    const o = docSnap.data();
+
+    const card = document.createElement("div");
+    card.className = "card";
+
+    card.innerHTML = `
+      <h2>🪑 ${o.table}</h2>
+      <p>${o.items.join(", ")}</p>
+      <p><b>${o.status}</b></p>
+    `;
+
+    ordersDiv.appendChild(card);
+  });
+
+  ding.play();
+});
+</script>
+
+</body>
+</html>
